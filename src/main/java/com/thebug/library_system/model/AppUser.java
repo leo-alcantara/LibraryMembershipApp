@@ -10,6 +10,7 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appUserId;
+    @Column(unique = true)
     private String username;
     private String password;
     private LocalDate regDate;
