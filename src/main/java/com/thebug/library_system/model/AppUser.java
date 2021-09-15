@@ -18,10 +18,15 @@ public class AppUser {
     private LocalDate regDate;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "detailsId")
+    @JoinColumn(name = "details_id")
     private Details userDetails;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "borrower")
+    @OneToMany(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY,
+            mappedBy = "borrower")
     private List<BookLoan> loans;
 
     public AppUser() {
@@ -34,25 +39,24 @@ public class AppUser {
         this.regDate = LocalDate.now();
     }
 
-
     //CONVENIENCE METHODS
     public void addBookLoan(BookLoan bookLoan) {
         if (bookLoan.getBook().isAvailable()){
-            bookLoan.setBorrower(this);
-            bookLoan.getBook().setAvailable(false);
             if (!loans.contains(bookLoan)) {
+                bookLoan.setBorrower(this);
+                bookLoan.getBook().setAvailable(false);
                 loans.add(bookLoan);
             }
-        }else {
-            System.out.println("Book is not available!");
         }
     }
 
-    public void removeBook(BookLoan bookLoan) {
-        if (loans.contains(bookLoan)) {
-            bookLoan.setBorrower(null);
-            loans.remove(bookLoan);
+    public boolean returnBookSetAvailable(BookLoan bookLoan) {
+        if(loans.contains(bookLoan)) {
+            bookLoan.setReturned(true);
             bookLoan.getBook().setAvailable(true);
+            return true;
+        } else{
+            return false;
         }
     }
 

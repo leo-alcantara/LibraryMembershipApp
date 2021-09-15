@@ -37,13 +37,13 @@ public class Book {
     public void addAuthor(Author author){
         if(!authors.contains(author)){
             authors.add(author);
-            author.addBook(this);
+            author.getWrittenBooks().add(this);
         }
     }
 
     public void removeAuthor (Author author){
         if(authors.contains(author)){
-            author.removeBook(this);
+            author.getWrittenBooks().remove(this);
             authors.remove(author);
         }
     }

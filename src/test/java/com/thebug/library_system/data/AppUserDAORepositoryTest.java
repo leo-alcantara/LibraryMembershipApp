@@ -1,6 +1,7 @@
 package com.thebug.library_system.data;
 
 import com.thebug.library_system.model.AppUser;
+import com.thebug.library_system.model.Author;
 import com.thebug.library_system.model.Details;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,22 +80,17 @@ class AppUserDAORepositoryTest {
 
     @Test
     void testUpdate() {
-        AppUser appUser = new AppUser("Test", "tttt", null);
-
-        String username = "Yo";
-        String password = "oooo";
-        assertEquals(0, appUser.getAppUserId());
+        //AppUser appUserO = new AppUser("Test", "tttt", null);
+        AppUser toUpdate = new AppUser("Dobbie", "Well", null);
 
         //Act
-        //appUserDAO.create(appUser);
-        appUser.setPassword(username);
-        appUser.setPassword(password);
 
-        appUserDAO.update(appUser);
+        appUserDAO.create(toUpdate);
+        AppUser updated = appUserDAO.update(toUpdate);
 
         //Assert
-        assertTrue(appUser.getAppUserId() != 0);
-        assertEquals(username, appUser.getUsername());
+        assertEquals(toUpdate.getAppUserId(), updated.getAppUserId());
+        assertEquals("Dobbie", updated.getUsername());
     }
 
     @Test

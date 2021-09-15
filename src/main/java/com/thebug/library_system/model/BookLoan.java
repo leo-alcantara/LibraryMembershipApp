@@ -39,7 +39,7 @@ public class BookLoan {
         this.borrower = borrower;
         this.book = book;
         this.loanDate = LocalDate.now();
-        this.dueDate = loanDate.plus(Period.ofDays(book.getMaxLoanDays()));
+        this.dueDate = loanDate.plusDays(book.getMaxLoanDays());
     }
 
     public int getLoanId() {

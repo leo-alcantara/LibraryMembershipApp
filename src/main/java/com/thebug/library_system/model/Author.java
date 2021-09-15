@@ -42,7 +42,7 @@ public class Author {
     public void addBook(Book book){
         if(!writtenBooks.contains(book)){
             writtenBooks.add(book);
-            book.addAuthor(this);
+            book.getAuthors().add(this);
         }
     }
 
