@@ -1,10 +1,7 @@
 package com.thebug.library_system.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 public class Book {
@@ -15,14 +12,37 @@ public class Book {
     private String isbn;
     private String title;
     private int maxLoanDays;
+    @ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY)
+            @JoinTable(name = "books_and_authors",
+            joinColumns = @JoinColumn(name = "bookId"),
+            inverseJoinColumns = @JoinColumn(name = "authorId"))
+    Set<Author> authors;
 
     public Book() {
     }
 
-    public Book(String isbn, String title, int maxLoanDays) {
+    public Book(String isbn, String title, int maxLoanDays, Set<Author> authors) {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+        this.authors = authors;
+    }
+
+    //CONVENIENCE METHODS
+    public void addAuthor(Author author){
+        if(!authors.contains(author)){
+            authors.add(author);
+        }
+    }
+
+    public void removeAuthor (Author author){
+        if(authors.contains(author)){
+            authors.remove(author);
+        }
     }
 
     public int getBookId() {
@@ -55,6 +75,14 @@ public class Book {
 
     public void setMaxLoanDays(int maxLoanDays) {
         this.maxLoanDays = maxLoanDays;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.thebug.library_system.data;
 
-import com.thebug.library_system.model.AppUser;
+import com.thebug.library_system.model.Author;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,41 +10,41 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
-public class AppUserDAORepository implements AppUserDAO {
+public class AuthorDAORepository implements AuthorDAO {
 
     @PersistenceContext
     EntityManager entityManager;
 
     @Override
     @Transactional
-    public AppUser findById(int id) {
-        return entityManager.find(AppUser.class, id);
+    public Author findById(int id) {
+        return entityManager.find(Author.class, id);
     }
 
     @Override
     @Transactional
-    public Collection<AppUser> findAll() {
-        Query query = entityManager.createQuery("SELECT a FROM AppUser a", AppUser.class);
+    public Collection<Author> findAll() {
+        Query query = entityManager.createQuery("SELECT a FROM Author a", Author.class);
         return query.getResultList();
     }
 
     @Override
     @Transactional
-    public AppUser create(AppUser appUser) {
-        entityManager.persist(appUser);
-        return appUser;
+    public Author create(Author author) {
+        entityManager.persist(author);
+        return author;
     }
 
     @Override
     @Transactional
-    public AppUser update(AppUser appUser) {
-        return entityManager.merge(appUser);
+    public Author update(Author author) {
+        return entityManager.merge(author);
     }
 
     @Override
     @Transactional
     public void delete(int id) {
-        entityManager.remove(findById(id));
+        entityManager.remove(id);
 
     }
 }
