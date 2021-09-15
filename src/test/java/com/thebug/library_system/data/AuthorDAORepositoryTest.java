@@ -96,5 +96,14 @@ class AuthorDAORepositoryTest {
 
     @Test
     void delete() {
+        //Arrange
+        assertNotNull(testAuthor);
+
+        //Act
+        authorDAO.delete(testAuthor.getAuthorId());
+
+        //Assert
+        assertNull(testEntityManager.find(Author.class, testId));
     }
+
 }

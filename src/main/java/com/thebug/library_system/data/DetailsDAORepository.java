@@ -45,7 +45,7 @@ public class DetailsDAORepository implements DetailsDAO {
     @Override
     @Transactional
     public void delete(int id) {
-        entityManager.remove(id);
+        entityManager.remove(findById(id));
 
     }
 }

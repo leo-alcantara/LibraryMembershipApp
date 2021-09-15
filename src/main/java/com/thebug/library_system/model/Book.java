@@ -18,8 +18,8 @@ public class Book {
             CascadeType.REFRESH},
             fetch = FetchType.LAZY)
             @JoinTable(name = "books_and_authors",
-            joinColumns = @JoinColumn(name = "bookId"),
-            inverseJoinColumns = @JoinColumn(name = "authorId"))
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
     Set<Author> authors;
 
     public Book() {

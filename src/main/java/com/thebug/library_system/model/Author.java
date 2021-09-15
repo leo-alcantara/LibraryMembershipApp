@@ -1,6 +1,7 @@
 package com.thebug.library_system.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,8 +19,8 @@ public class Author {
             CascadeType.REFRESH},
             fetch = FetchType.LAZY)
     @JoinTable(name = "books_and_authors",
-            joinColumns = @JoinColumn(name = "authorId"),
-            inverseJoinColumns = @JoinColumn(name = "bookId"))
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> writtenBooks;
 
     public Author() {
@@ -29,6 +30,12 @@ public class Author {
         this.firstName = firstName;
         this.lastName = lastName;
         this.writtenBooks = writtenBooks;
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        writtenBooks = new HashSet<>();
     }
 
     //CONVENIENCE METHODS

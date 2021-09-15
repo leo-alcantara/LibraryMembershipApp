@@ -44,7 +44,7 @@ public class AuthorDAORepository implements AuthorDAO {
     @Override
     @Transactional
     public void delete(int id) {
-        entityManager.remove(id);
+        entityManager.remove(findById(id));
 
     }
 }

@@ -81,14 +81,20 @@ class AppUserDAORepositoryTest {
     void testUpdate() {
         AppUser appUser = new AppUser("Test", "tttt", null);
 
+        String username = "Yo";
+        String password = "oooo";
         assertEquals(0, appUser.getAppUserId());
 
         //Act
-        appUserDAO.create(appUser);
+        //appUserDAO.create(appUser);
+        appUser.setPassword(username);
+        appUser.setPassword(password);
+
         appUserDAO.update(appUser);
 
         //Assert
         assertTrue(appUser.getAppUserId() != 0);
+        assertEquals(username, appUser.getUsername());
     }
 
     @Test
