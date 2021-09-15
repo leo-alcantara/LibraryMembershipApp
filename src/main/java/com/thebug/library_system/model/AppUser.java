@@ -2,6 +2,7 @@ package com.thebug.library_system.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,13 +11,18 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appUserId;
+
     @Column(unique = true)
     private String username;
     private String password;
     private LocalDate regDate;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "detailsId")
     private Details userDetails;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "borrower")
+    private List<BookLoan> loans;
 
     public AppUser() {
     }
@@ -26,6 +32,28 @@ public class AppUser {
         this.password = password;
         this.userDetails = userDetails;
         this.regDate = LocalDate.now();
+    }
+
+
+    //CONVENIENCE METHODS
+    public void addBookLoan(BookLoan bookLoan) {
+        if (bookLoan.getBook().isAvailable()){
+            bookLoan.setBorrower(this);
+            bookLoan.getBook().setAvailable(false);
+            if (!loans.contains(bookLoan)) {
+                loans.add(bookLoan);
+            }
+        }else {
+            System.out.println("Book is not available!");
+        }
+    }
+
+    public void removeBook(BookLoan bookLoan) {
+        if (loans.contains(bookLoan)) {
+            bookLoan.setBorrower(null);
+            loans.remove(bookLoan);
+            bookLoan.getBook().setAvailable(true);
+        }
     }
 
     public int getAppUserId() {
@@ -66,6 +94,14 @@ public class AppUser {
 
     public void setUserDetails(Details userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public List<BookLoan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<BookLoan> loans) {
+        this.loans = loans;
     }
 
     @Override

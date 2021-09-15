@@ -2,6 +2,7 @@ package com.thebug.library_system.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 @Entity
@@ -13,29 +14,32 @@ public class BookLoan {
     private LocalDate loanDate;
     private LocalDate dueDate;
     private boolean returned;
+
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "appUserId")
-    private AppUser borrowed;
+    @JoinColumn(name = "borrower_id")
+    private AppUser borrower;
+
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH},
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "bookId")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     public BookLoan() {
     }
 
-    public BookLoan(LocalDate dueDate, AppUser borrowed, Book book) {
+    public BookLoan(LocalDate dueDate, AppUser borrower, Book book) {
         this.dueDate = dueDate;
-        this.borrowed = borrowed;
+        this.borrower = borrower;
         this.book = book;
         this.loanDate = LocalDate.now();
+        this.dueDate = loanDate.plus(Period.ofDays(book.getMaxLoanDays()));
     }
 
     public int getLoanId() {
@@ -70,12 +74,12 @@ public class BookLoan {
         this.returned = returned;
     }
 
-    public AppUser getBorrowed() {
-        return borrowed;
+    public AppUser getBorrower() {
+        return borrower;
     }
 
-    public void setBorrowed(AppUser borrowed) {
-        this.borrowed = borrowed;
+    public void setBorrower(AppUser borrowed) {
+        this.borrower = borrowed;
     }
 
     public Book getBook() {
@@ -85,6 +89,8 @@ public class BookLoan {
     public void setBook(Book book) {
         this.book = book;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -106,7 +112,7 @@ public class BookLoan {
                 ", loanDate=" + loanDate +
                 ", dueDate=" + dueDate +
                 ", returned=" + returned +
-                ", borrowed=" + borrowed +
+                ", borrowed=" + borrower +
                 ", book=" + book +
                 '}';
     }

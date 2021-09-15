@@ -20,7 +20,8 @@ public class Book {
             @JoinTable(name = "books_and_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    Set<Author> authors;
+    private Set<Author> authors;
+    private boolean available = true;
 
     public Book() {
     }
@@ -36,11 +37,13 @@ public class Book {
     public void addAuthor(Author author){
         if(!authors.contains(author)){
             authors.add(author);
+            author.addBook(this);
         }
     }
 
     public void removeAuthor (Author author){
         if(authors.contains(author)){
+            author.removeBook(this);
             authors.remove(author);
         }
     }
@@ -83,6 +86,14 @@ public class Book {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override

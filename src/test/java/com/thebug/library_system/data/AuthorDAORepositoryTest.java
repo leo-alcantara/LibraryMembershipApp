@@ -81,16 +81,18 @@ class AuthorDAORepositoryTest {
 
     @Test
     void update() {
-        Author author = new Author("Test", "tttt", null);
+        Author authorOriginal = new Author("Test", "tttt", null);
 
-        assertEquals(0, author.getAuthorId());
+        Author toUpdate = new Author("Dobbie", "Well", null);
 
         //Act
-        authorDAO.create(author);
-        authorDAO.update(author);
+        authorDAO.create(authorOriginal);
+        authorDAO.create(toUpdate);
+        Author updated = authorDAO.update(toUpdate);
 
         //Assert
-        assertTrue(author.getAuthorId() != 0);
+        assertEquals(toUpdate.getAuthorId(), updated.getAuthorId());
+        assertEquals("Dobbie", updated.getFirstName());
 
     }
 
