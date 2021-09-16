@@ -34,12 +34,11 @@ public class BookLoan {
     public BookLoan() {
     }
 
-    public BookLoan(LocalDate dueDate, AppUser borrower, Book book) {
-        this.dueDate = dueDate;
-        this.borrower = borrower;
-        this.book = book;
+    public BookLoan(AppUser borrower, Book book) {
         this.loanDate = LocalDate.now();
         this.dueDate = loanDate.plusDays(book.getMaxLoanDays());
+        this.borrower = borrower;
+        this.book = book;
     }
 
     public int getLoanId() {

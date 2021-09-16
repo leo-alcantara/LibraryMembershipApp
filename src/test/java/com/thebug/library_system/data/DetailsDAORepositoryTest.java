@@ -79,6 +79,19 @@ class DetailsDAORepositoryTest {
 
     @Test
     void update() {
+        //Arrange
+        Details toUpdate = new Details("kjhk", "kjashakdh", null);
+        Details updated = new Details("leo@email.com", "Leo", null);
+        detailsDAO.create(toUpdate);
+        detailsDAO.create(updated);
+
+        //Act
+        toUpdate = detailsDAO.update(updated);
+
+        //Assert
+        assertEquals(toUpdate.getDetailId(), updated.getDetailId());
+        assertEquals(toUpdate.getName(), updated.getName());
+
     }
 
     @Test

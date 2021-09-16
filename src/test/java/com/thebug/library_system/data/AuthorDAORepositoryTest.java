@@ -81,12 +81,10 @@ class AuthorDAORepositoryTest {
 
     @Test
     void update() {
-        Author authorOriginal = new Author("Test", "tttt", null);
-
+       //Arrange
         Author toUpdate = new Author("Dobbie", "Well", null);
 
         //Act
-        authorDAO.create(authorOriginal);
         authorDAO.create(toUpdate);
         Author updated = authorDAO.update(toUpdate);
 

@@ -32,13 +32,14 @@ class BookLoanDAORepositoryTest {
 
     private BookLoan testBookLoan;
     private int testId;
-    private Set<Book> books;
     private Book testBook;
     private AppUser testBorrower;
 
     @BeforeEach
     void setUp() {
-        testBookLoan = testEntityManager.persist(new BookLoan(null, testBorrower, testBook));
+        testBook = new Book("asjkhdka", "hjasgda", 15, null);
+        testBorrower = new AppUser("Dobbie", "Well", null);
+        testBookLoan = testEntityManager.persist(new BookLoan(testBorrower, testBook));
         testId = testBookLoan.getLoanId();
     }
 
@@ -57,7 +58,7 @@ class BookLoanDAORepositoryTest {
     @Test
     void findAll() {
         //Arrange
-        BookLoan bookLoan = new BookLoan(null, testBorrower, testBook);
+        BookLoan bookLoan = new BookLoan(testBorrower, testBook);
         bookLoanDAO.create(bookLoan);
         Collection<BookLoan> found;
 
@@ -71,7 +72,7 @@ class BookLoanDAORepositoryTest {
     @Test
     void create() {
         //Arrange
-        BookLoan bookLoan = new BookLoan(null, testBorrower, testBook);
+        BookLoan bookLoan = new BookLoan(testBorrower, testBook);
         assertEquals(0, bookLoan.getLoanId());
 
         //Act
@@ -83,6 +84,19 @@ class BookLoanDAORepositoryTest {
 
     @Test
     void update() {
+        //Arrange
+        Book booK = new Book("297360", "Ztockholm", 10, null);
+        BookLoan toUpdate = new BookLoan(testBorrower, testBook);
+        bookLoanDAO.create(toUpdate);
+        BookLoan updated = new BookLoan(testBorrower, booK);
+        bookLoanDAO.create(updated);
+
+        //Act
+        toUpdate = bookLoanDAO.update(updated);
+
+        //Assert
+        assertEquals(toUpdate.getLoanId(), updated.getLoanId());
+        assertEquals(toUpdate.getBook(), updated.getBook());
     }
 
     @Test

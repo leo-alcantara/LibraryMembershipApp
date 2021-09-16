@@ -82,6 +82,16 @@ class BookDAORepositoryTest {
 
     @Test
     void update() {
+        //Arrange
+        Book toUpdate = new Book("ajhsgd", "Dobbie", 10, null);
+        bookDAO.create(toUpdate);
+        Book updated;
+        //Act
+        updated = bookDAO.update(toUpdate);
+
+        //Assert
+        assertEquals(toUpdate.getBookId(), updated.getBookId());
+        assertEquals("Dobbie", updated.getTitle());
 
     }
 
